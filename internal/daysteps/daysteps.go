@@ -24,8 +24,8 @@ func parsePackage(data string) (int, time.Duration, error) {
 		return 0, 0, fmt.Errorf("неправильный формат данных: ожидается 'шаги,время'")
 	}
 
-	stepsStr := strings.TrimSpace(parts[0])
-	durationStr := strings.TrimSpace(parts[1])
+	stepsStr := parts[0]
+	durationStr := parts[1]
 
 	// Преобразовать первый элемент слайса в тип int
 	steps, err := strconv.Atoi(stepsStr)
