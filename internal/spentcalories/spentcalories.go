@@ -26,23 +26,40 @@ func parseTraining(data string) (int, string, time.Duration, error) {
 		return 0, "", 0, fmt.Errorf("invalid format")
 	}
 
+	firstElement := parts[0]
+
 	// Преобразовать первый элемент слайса в тип int
-	steps, err := strconv.Atoi(strings.TrimSpace(parts[0]))
+	steps, err := strconv.Atoi(firstElement)
 	if err != nil {
 		return 0, "", 0, fmt.Errorf("ошибка преобразования шагов: %v", err)
 	}
 
-	activity := strings.TrimSpace(parts[1])
+	if steps <= 0  {
+		return 0, "", 0, fmt.Errorf("ошибка преобразования шагов: %v", err)
+	}
+	
+	activity := parts[1]
 
 	// Преобразовать третий элемент слайса в time.Duration
-	duration, err := time.ParseDuration(strings.TrimSpace(parts[2]))
+	duration, err := time.ParseDuration(parts[2])
 	if err != nil {
 		return 0, "", 0, fmt.Errorf("ошибка преобразования продолжительности: %v", err)
+	}
+
+	// Проверка на нулевую продолжительность
+	if duration <= 0 {
+		return 0, "", 0, fmt.Errorf("продолжительность не может быть равна нулю")
+	}
+
+	// Или более детальная проверка в минутах и часах
+	if duration.Minutes() <= 0 {
+		return 0, "", 0, fmt.Errorf("продолжительность не может быть 0 минут")
 	}
 
 	// Возврат количества шагов, вида активности, продолжительности и nil 
 	return steps, activity, duration, nil
 }
+
 
 func distance(steps int, height float64) float64 {
 	// Длина шага

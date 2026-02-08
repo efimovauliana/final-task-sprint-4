@@ -3,6 +3,7 @@ package daysteps
 import (
 	"time"
 	"strconv"
+	"log"
 	"strings"
 	"fmt"
 	"github.com/Yandex-Practicum/tracker/internal/spentcalories"
@@ -55,6 +56,7 @@ func DayActionInfo(data string, weight, height float64) string {
 	// Получить данные о количестве шагов и продолжительности прогулки
 	steps, duration, err := parsePackage(data)
 	if err != nil {
+		log.Printf("Ошибка parsePackage: %v", err)
 		return ""
 	}
 
